@@ -10,7 +10,7 @@ import { User } from '../model/user';
 export class CrudService {
   constructor(private http: Http) { }
 
-  private url = '/';
+  private url = 'http://localhost:3000/';
 
   newUser(user: User): Observable<User[]> {
     let userString = JSON.stringify(user);
@@ -19,7 +19,7 @@ export class CrudService {
 
     return this.http.post(this.url, user, options)
                                     .map((res: Response) => res.json())
-                                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+                                    .catch((error: any) => Observable.throw('Server error'));
   }
 
   updateUser(id, user: User): Observable<User[]> {
@@ -29,19 +29,19 @@ export class CrudService {
 
     return this.http.put(this.url + id, user, options)
                                     .map((res: Response) => res.json())
-                                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+                                    .catch((error: any) => Observable.throw('Server error'));
   }
 
   getUsers() : Observable<User[]> {
          return this.http.get(this.url)
                          .map((res:Response) => res.json())
-                         .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+                         .catch((error:any) => Observable.throw('Server error'));
 
      }
 
      deleteUser(id): Observable<User> {
        return this.http.delete(this.url + id)
                               .map((res: Response) => res.json())
-                              .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+                              .catch((error: any) => Observable.throw('Server error'));
      }
 }

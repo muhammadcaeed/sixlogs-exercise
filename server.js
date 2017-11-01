@@ -14,6 +14,19 @@ app.use(bodyParser.json());
 var distDir = __dirname + "/dist/";
 app.use(express.static(distDir));
 
+const forceSSL = function() {
+  return function (req, res, next) {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect(
+       ['https://', req.get('Host'), req.url].join('')
+      );
+    }
+    next();
+  }
+}
+
+app.use(forceSSL());
+
 var db;
 
 // mongodb.MongoClient.connect('mongodb://localhost:27017/exercise', function (err, database) {
