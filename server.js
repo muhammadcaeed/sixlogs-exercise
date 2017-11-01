@@ -14,18 +14,18 @@ app.use(bodyParser.json());
 var distDir = __dirname + "/dist/";
 app.use(express.static(distDir));
 
-const forceSSL = function() {
-  return function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-      return res.redirect(
-       ['https://', req.get('Host'), req.url].join('')
-      );
-    }
-    next();
-  }
-}
-
-app.use(forceSSL());
+// const forceSSL = function() {
+//   return function (req, res, next) {
+//     if (req.headers['x-forwarded-proto'] !== 'https') {
+//       return res.redirect(
+//        ['https://', req.get('Host'), req.url].join('')
+//       );
+//     }
+//     next();
+//   }
+// }
+//
+// app.use(forceSSL());
 
 var db;
 
@@ -37,7 +37,7 @@ mongodb.MongoClient.connect('mongodb://msaeed:mastiworld1@ds145188.mlab.com:4518
   }
   db = database;
 
-app.post('/', function(req, res) {
+app.post('/api', function(req, res) {
   db.collection(USERS_COLLECTION).insert(
       req.body,
       function (err, result) {
@@ -46,21 +46,21 @@ app.post('/', function(req, res) {
   })
 });
 
-app.put('/:id', function(req, res) {
+app.put('/api/:id', function(req, res) {
   db.collection(USERS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, req.body, function(err, result) {
     if (err) res.sendStatus(400);
     else res.status(200).json(result);
   })
 });
 
-app.get('/', function(req, res) {
+app.get('/api', function(req, res) {
   db.collection(USERS_COLLECTION).find({}).toArray(function (err, users) {
     if (err) res.sendStatus(400);
     else res.status(200).json(users);
   })
 });
 
-app.delete('/:id', function(req, res) {
+app.delete('/api/:id', function(req, res) {
   db.collection(USERS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
     if (err) res.sendStatus(400);
     else res.status(200).json(result);

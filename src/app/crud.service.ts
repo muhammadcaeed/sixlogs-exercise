@@ -10,7 +10,7 @@ import { User } from '../model/user';
 export class CrudService {
   constructor(private http: Http) { }
 
-  private url = 'http://localhost:3000/';
+  private url = '/api/';
 
   newUser(user: User): Observable<User[]> {
     let userString = JSON.stringify(user);
